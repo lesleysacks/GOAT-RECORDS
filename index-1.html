@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GOAT RECORDS — Built for Greatness. Powered by Sound.</title>
+  <meta name="description" content="GOAT RECORDS — Premium record label discovering and building top-tier talent. Bookings, artists, events, and merch." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & VARIABLES ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red:    #FF0000;
+      --red-dim: #cc0000;
+      --black:  #000000;
+      --gray-dark: #0d0d0d;
+      --gray-mid:  #1a1a1a;
+      --gray:      #333333;
+      --gray-light:#888888;
+      --white:  #ffffff;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+      --font-cond:    'Barlow Condensed', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.65;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── CUSTOM SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: var(--red); }
+
+    /* ─── GRAIN OVERLAY ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── UTILITY ─── */
+    .section { padding: 100px 5vw; }
+    .section-label {
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 40px;
+    }
+    .red { color: var(--red); }
+    .btn {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 14px 36px;
+      border: 1.5px solid currentColor;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+      z-index: 0;
+    }
+    .btn:hover::before { transform: scaleX(1); }
+    .btn span { position: relative; z-index: 1; }
+    .btn:hover span { color: var(--black); }
+    .btn-red { color: var(--red); border-color: var(--red); }
+    .btn-white { color: var(--white); border-color: var(--white); }
+    .btn-solid {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+    .btn-solid::before { background: #fff; }
+    .btn-solid:hover span { color: var(--red); }
+    .divider {
+      width: 60px; height: 3px;
+      background: var(--red);
+      margin: 24px 0;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── NAVIGATION ─── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 5vw;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+    #nav.scrolled {
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(255,0,0,0.2);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--red); }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-cond);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--red); }
+    .nav-cta {
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--red);
+      padding: 9px 22px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--red-dim); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: rgba(0,0,0,0.97);
+      padding: 40px 5vw;
+      flex-direction: column;
+      gap: 28px;
+      z-index: 999;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .mobile-menu.open {
+      pointer-events: all;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--red); }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.85) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero-pre {
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+      animation: fadeDown 1s ease 0.3s both;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 16vw, 14rem);
+      line-height: 0.88;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      animation: fadeDown 1s ease 0.5s both;
+      position: relative;
+    }
+    .hero-title .glitch {
+      position: relative;
+    }
+    .hero-title .glitch::before,
+    .hero-title .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+    }
+    .hero-title .glitch::before {
+      color: var(--red);
+      clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
+      animation: glitch1 3.5s infinite;
+    }
+    .hero-title .glitch::after {
+      color: #00eaff;
+      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+      animation: glitch2 4s infinite;
+    }
+    @keyframes glitch1 {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-3px, 1px); }
+      94% { transform: translate(3px, -1px); }
+      96% { transform: translate(-2px, 0); }
+    }
+    @keyframes glitch2 {
+      0%, 88%, 100% { transform: translate(0); }
+      90% { transform: translate(3px, 2px); }
+      93% { transform: translate(-3px, -1px); }
+      95% { transform: translate(2px, 1px); }
+    }
+    .hero-sub {
+      font-family: var(--font-cond);
+      font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+      letter-spacing: 0.25em;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      margin-top: 24px;
+      margin-bottom: 48px;
+      animation: fadeDown 1s ease 0.7s both;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeDown 1s ease 0.9s both;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeIn 1s ease 1.4s both;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--red));
+      animation: scrollPulse 1.8s ease-in-out infinite;
+    }
+    .hero-scroll-text {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: rgba(255,255,255,0.4);
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.15); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── TICKER ─── */
+    .ticker-wrap {
+      background: var(--red);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-inner span {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--black);
+      margin-right: 60px;
+    }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── ABOUT ─── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-frame {
+      width: 100%;
+      padding-top: 120%;
+      position: relative;
+      overflow: hidden;
+      background: var(--gray-mid);
+    }
+    .about-img-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 50%, #330000 100%);
+    }
+    .about-img-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 8rem;
+      color: rgba(255,0,0,0.08);
+      letter-spacing: 0.1em;
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -20px; right: -20px;
+      width: 110px; height: 110px;
+      background: var(--red);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+    }
+    .about-badge-num {
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--white);
+    }
+    .about-badge-text {
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.8);
+    }
+    .about-text { }
+    .about-text p {
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 44px;
+      padding-top: 44px;
+      border-top: 1px solid var(--gray);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      color: var(--red);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--font-cond);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+
+    /* ─── ARTISTS ─── */
+    #artists { background: var(--gray-dark); }
+    .artists-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+    }
+    .artists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .artist-card {
+      position: relative;
+      background: var(--gray-mid);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+    }
+    .artist-card:hover { transform: translateY(-8px); }
+    .artist-card-img {
+      width: 100%;
+      padding-top: 110%;
+      position: relative;
+      overflow: hidden;
+    }
+    .artist-card-img-inner {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.6s cubic-bezier(.22,1,.36,1);
+    }
+    .artist-card:hover .artist-card-img-inner { transform: scale(1.06); }
+    .artist-avatar {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 5rem;
+      letter-spacing: 0.05em;
+    }
+    .artist-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      opacity: 1;
+    }
+    .artist-overlay-detail {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 28px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .artist-card:hover .artist-overlay-detail { opacity: 1; }
+    .artist-card:hover .artist-overlay { opacity: 0; }
+    .artist-name {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      color: var(--white);
+    }
+    .artist-genre {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-top: 4px;
+    }
+    .artist-bio {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      margin: 12px 0 16px;
+    }
+    .artist-socials { display: flex; gap: 12px; justify-content: center; }
+    .artist-social {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: var(--font-cond);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .artist-social:hover { border-color: var(--red); color: var(--red); }
+    .status-badge {
+      display: inline-block;
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      margin-bottom: 8px;
+    }
+    .status-signed { background: var(--red); color: var(--white); }
+    .status-upcoming { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.5); }
+
+    /* ─── EVENTS ─── */
+    #events { }
+    .events-grid { display: flex; flex-direction: column; gap: 0; }
+    .event-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: background 0.2s;
+    }
+    .event-row:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .event-row:hover { background: rgba(255,0,0,0.03); }
+    .event-date {
+      text-align: center;
+    }
+    .event-day {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      line-height: 1;
+      color: var(--red);
+    }
+    .event-month {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .event-info { }
+    .event-title {
+      font-family: var(--font-cond);
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .event-venue {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 3px;
+    }
+    .event-tags { display: flex; gap: 8px; margin-top: 8px; }
+    .event-tag {
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.45);
+    }
+    .event-action { flex-shrink: 0; }
+
+    /* ─── MERCH ─── */
+    #merch { background: var(--gray-dark); }
+    .merch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 28px;
+    }
+    .merch-card {
+      position: relative;
+      background: var(--gray-mid);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .merch-card:hover { transform: translateY(-5px); }
+    .merch-img {
+      width: 100%;
+      padding-top: 100%;
+      position: relative;
+      overflow: hidden;
+      background: var(--gray);
+    }
+    .merch-img-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      letter-spacing: 0.1em;
+      transition: transform 0.5s ease;
+    }
+    .merch-card:hover .merch-img-inner { transform: scale(1.05); }
+    .merch-body { padding: 20px; }
+    .merch-name {
+      font-family: var(--font-cond);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .merch-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+    .merch-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .merch-price {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--white);
+    }
+    .merch-price span {
+      font-family: var(--font-cond);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.35);
+    }
+    .merch-buy {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 9px 18px;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .merch-buy:hover { background: var(--red-dim); }
+    .merch-new {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--red);
+      font-family: var(--font-cond);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      color: var(--white);
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery { }
+    .gallery-grid {
+      columns: 3;
+      column-gap: 12px;
+    }
+    .gallery-item {
+      break-inside: avoid;
+      position: relative;
+      margin-bottom: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--gray-mid);
+    }
+    .gallery-item-inner {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+    }
+    .gallery-item:hover .gallery-item-inner { transform: scale(1.04); }
+    .gallery-item-img {
+      width: 100%;
+      display: block;
+    }
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 2rem;
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-placeholder {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      color: rgba(255,255,255,0.08);
+      letter-spacing: 0.1em;
+      user-select: none;
+    }
+
+    /* ─── LIGHTBOX ─── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.96);
+      z-index: 9000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    .lightbox-content {
+      position: relative;
+      max-width: 85vw;
+      max-height: 85vh;
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 24px; right: 32px;
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--white);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .lightbox-close:hover { color: var(--red); }
+    .lightbox-img-display {
+      max-width: 100%;
+      max-height: 85vh;
+      display: block;
+    }
+    .lb-placeholder {
+      width: 800px;
+      max-width: 85vw;
+      height: 500px;
+      max-height: 85vh;
+      background: var(--gray-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .lb-placeholder-title {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: rgba(255,0,0,0.3);
+    }
+    .lb-placeholder-sub {
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ─── BOOKINGS ─── */
+    #bookings { background: var(--gray-dark); }
+    .bookings-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .bookings-info p {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.92rem;
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .booking-features { margin-top: 40px; }
+    .booking-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .bf-icon {
+      width: 40px; height: 40px;
+      background: rgba(255,0,0,0.12);
+      border: 1px solid rgba(255,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .bf-title {
+      font-family: var(--font-cond);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .bf-desc {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+    }
+    .bookings-form { }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white);
+      padding: 13px 16px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: #1a1a1a; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--red);
+    }
+    .form-group textarea { height: 120px; resize: vertical; }
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      font-family: var(--font-cond);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: var(--red-dim); }
+
+    /* ─── NEWSLETTER ─── */
+    #newsletter {
+      background: var(--red);
+      padding: 80px 5vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .nl-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: var(--black);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      margin-bottom: 12px;
+    }
+    .nl-sub {
+      font-family: var(--font-cond);
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.55);
+      margin-bottom: 36px;
+    }
+    .nl-form {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+      width: 100%;
+    }
+    .nl-input {
+      flex: 1;
+      padding: 14px 20px;
+      background: rgba(0,0,0,0.15);
+      border: 2px solid rgba(0,0,0,0.2);
+      border-right: none;
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .nl-input::placeholder { color: rgba(0,0,0,0.4); }
+    .nl-btn {
+      padding: 14px 28px;
+      background: var(--black);
+      color: var(--white);
+      border: 2px solid var(--black);
+      font-family: var(--font-cond);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .nl-btn:hover { background: #111; }
+
+    /* ─── CONTACT ─── */
+    #contact { }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+    }
+    .contact-block-label {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+    .contact-value {
+      font-family: var(--font-cond);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--white);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s;
+    }
+    .contact-value:hover { color: var(--red); }
+    .contact-value-small {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+    .social-links { display: flex; flex-direction: column; gap: 10px; }
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .social-link:hover { transform: translateX(4px); }
+    .social-link-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .social-link:hover .social-link-icon { background: var(--red); }
+    .social-link-name {
+      font-family: var(--font-cond);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 56px 5vw 32px;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      line-height: 1;
+    }
+    .footer-logo span { color: var(--red); }
+    .footer-slogan {
+      font-family: var(--font-cond);
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-top: 8px;
+    }
+    .footer-links-col h4 {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 16px;
+    }
+    .footer-links-col ul { list-style: none; }
+    .footer-links-col li { margin-bottom: 10px; }
+    .footer-links-col a {
+      font-family: var(--font-cond);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links-col a:hover { color: var(--red); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-copy {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.2);
+    }
+    .footer-red-line {
+      width: 40px; height: 2px;
+      background: var(--red);
+    }
+
+    /* ─── FEATURED ARTIST ─── */
+    #featured-artist {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+    }
+    .featured-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 90vh;
+      align-items: stretch;
+    }
+    .featured-visual {
+      position: relative;
+      overflow: hidden;
+      min-height: 500px;
+    }
+    .featured-visual-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #1a0000 0%, #000 40%, #0d0000 100%);
+    }
+    .featured-visual-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,0,0,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,0,0,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .featured-visual-glow {
+      position: absolute;
+      bottom: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,0,0,0.22) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .featured-monogram {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .featured-monogram-text {
+      font-family: var(--font-display);
+      font-size: clamp(7rem, 14vw, 16rem);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,0,0,0.18);
+      user-select: none;
+      animation: monogramPulse 4s ease-in-out infinite;
+    }
+    @keyframes monogramPulse {
+      0%, 100% { -webkit-text-stroke-color: rgba(255,0,0,0.18); }
+      50%       { -webkit-text-stroke-color: rgba(255,0,0,0.38); }
+    }
+    .featured-rank {
+      position: absolute;
+      top: 36px; left: 36px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .featured-rank-badge {
+      background: var(--red);
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      padding: 6px 14px;
+      color: var(--white);
+    }
+    .featured-rank-label {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .featured-vinyl {
+      position: absolute;
+      bottom: 32px; right: 32px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,0,0,0.25);
+      display: flex; align-items: center; justify-content: center;
+      animation: spin 10s linear infinite;
+    }
+    .featured-vinyl::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,0,0,0.15);
+    }
+    .featured-vinyl::after {
+      content: '';
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--red);
+      opacity: 0.6;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .featured-content {
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      background: var(--gray-dark);
+      border-left: 1px solid rgba(255,0,0,0.12);
+    }
+    .featured-tag {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .featured-tag::before {
+      content: '';
+      width: 32px; height: 1px;
+      background: var(--red);
+    }
+    .featured-name {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 7vw, 7.5rem);
+      line-height: 0.9;
+      letter-spacing: 0.03em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .featured-name .highlight { color: var(--red); display: block; }
+    .featured-genre-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0 32px;
+    }
+    .featured-genre-pill {
+      font-family: var(--font-cond);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border: 1px solid rgba(255,0,0,0.4);
+      color: var(--red);
+    }
+    .featured-genre-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+    .featured-bio {
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.6);
+      max-width: 480px;
+      margin-bottom: 36px;
+      border-left: 2px solid var(--red);
+      padding-left: 20px;
+    }
+    .featured-stats {
+      display: flex;
+      gap: 36px;
+      margin-bottom: 44px;
+      padding: 24px 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .featured-stat-num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      color: var(--white);
+      line-height: 1;
+    }
+    .featured-stat-label {
+      font-family: var(--font-cond);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-top: 4px;
+    }
+    .featured-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+    .featured-socials { display: flex; gap: 10px; margin-top: 28px; }
+    @media (max-width: 900px) {
+      .featured-inner { grid-template-columns: 1fr; }
+      .featured-visual { min-height: 380px; }
+      .featured-content { padding: 56px 32px; }
+    }
+
+    /* ─── MUSIC TOGGLE ─── */
+    #music-toggle {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 500;
+      width: 48px; height: 48px;
+      background: var(--red);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    #music-toggle:hover { background: var(--red-dim); transform: scale(1.08); }
+    .music-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+    }
+    .music-bar {
+      width: 3px;
+      background: var(--white);
+      border-radius: 1px;
+      animation: musicBar 0.8s ease-in-out infinite alternate;
+    }
+    .music-bar:nth-child(1) { height: 6px;  animation-delay: 0s; }
+    .music-bar:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+    .music-bar:nth-child(3) { height: 10px; animation-delay: 0.3s; }
+    .music-bar:nth-child(4) { height: 16px; animation-delay: 0.1s; }
+    @keyframes musicBar {
+      from { transform: scaleY(0.4); }
+      to   { transform: scaleY(1); }
+    }
+    #music-toggle.paused .music-bar { animation-play-state: paused; }
+    .pause-icon { display: none; color: var(--white); font-size: 1.1rem; font-weight: 700; }
+    #music-toggle.paused .music-bars { display: none; }
+    #music-toggle.paused .pause-icon { display: block; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      #about { grid-template-columns: 1fr; gap: 48px; }
+      .about-visual { max-width: 400px; }
+      .bookings-inner { grid-template-columns: 1fr; gap: 48px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .gallery-grid { columns: 2; }
+      .footer-top { flex-direction: column; gap: 40px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: flex; }
+      .artists-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .event-row { grid-template-columns: 60px 1fr; gap: 16px; }
+      .event-action { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .luda-wide { grid-column: span 1 !important; grid-template-columns: 1fr !important; flex-direction: column; }
+      .luda-wide .artist-card-img { min-height: 200px !important; padding-top: 0 !important; }
+    }
+    @media (max-width: 500px) {
+      .section { padding: 72px 5vw; }
+      .gallery-grid { columns: 1; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .nl-form { flex-direction: column; }
+      .nl-input, .nl-btn { width: 100%; }
+      .nl-input { border-right: 2px solid rgba(0,0,0,0.2); border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">GOAT<span>●</span>REC</a>
+  <ul class="nav-links">
+    <li><a href="#featured-artist" style="color:var(--red)">LUDA G</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#artists">Artists</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#merch">Merch</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#bookings">Bookings</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#bookings" class="nav-cta">Book Now</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ─── MOBILE MENU ─── -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#featured-artist" style="color:var(--red)" onclick="closeMobile()">LUDA G</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#artists" onclick="closeMobile()">Artists</a>
+  <a href="#events" onclick="closeMobile()">Events</a>
+  <a href="#merch" onclick="closeMobile()">Merch</a>
+  <a href="#gallery" onclick="closeMobile()">Gallery</a>
+  <a href="#bookings" onclick="closeMobile()">Bookings</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-pre">Est. 2020 — The Pinnacle of Sound</div>
+    <h1 class="hero-title">
+      <span class="glitch" data-text="GOAT">GOAT</span><br/>
+      <span class="glitch" data-text="RECORDS">RECORDS</span>
+    </h1>
+    <p class="hero-sub">Built for Greatness. Powered by Sound.</p>
+    <div class="hero-ctas">
+      <a href="#bookings" class="btn btn-red"><span>Join the Label</span></a>
+      <a href="#bookings" class="btn btn-white"><span>Book Us</span></a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <div class="hero-scroll-text">Scroll</div>
+  </div>
+</section>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>GOAT RECORDS</span><span>★</span>
+    <span>BUILT FOR GREATNESS</span><span>★</span>
+    <span>POWERED BY SOUND</span><span>★</span>
+    <span>TOP TIER TALENT</span><span>★</span>
+    <span>GOAT RECORDS</span><span>★</span>
+    <span>BUILT FOR GREATNESS</span><span>★</span>
+    <span>POWERED BY SOUND</span><span>★</span>
+    <span>TOP TIER TALENT</span><span>★</span>
+  </div>
+</div>
+
+<!-- ─── FEATURED ARTIST: LUDA G ─── -->
+<section id="featured-artist">
+  <div class="featured-inner">
+    <!-- Visual side -->
+    <div class="featured-visual">
+      <div class="featured-visual-bg"></div>
+      <div class="featured-visual-grid"></div>
+      <div class="featured-visual-glow"></div>
+      <div class="featured-rank">
+        <div class="featured-rank-badge">★ #1</div>
+        <div class="featured-rank-label">Lead Artist</div>
+      </div>
+      <div class="featured-monogram">
+        <div class="featured-monogram-text">LG</div>
+      </div>
+      <div class="featured-vinyl"></div>
+    </div>
+    <!-- Content side -->
+    <div class="featured-content fade-in">
+      <div class="featured-tag">Featured Artist</div>
+      <h2 class="featured-name">
+        LUDA
+        <span class="highlight">G</span>
+      </h2>
+      <div class="featured-genre-bar">
+        <span class="featured-genre-pill">Rap</span>
+        <div class="featured-genre-dot"></div>
+        <span class="featured-genre-pill">Hip-Hop</span>
+        <div class="featured-genre-dot"></div>
+        <span class="featured-genre-pill">Paarl</span>
+      </div>
+      <p class="featured-bio">
+        Born and raised in the streets of Paarl, LUDA G is the cornerstone of GOAT RECORDS. His razor-sharp lyricism, cinematic delivery, and relentless work ethic have made him the face of a new generation of South African rap. From local open mics to packed venues — every bar he drops is built to last.
+      </p>
+      <div class="featured-stats">
+        <div>
+          <div class="featured-stat-num">12+</div>
+          <div class="featured-stat-label">Tracks Released</div>
+        </div>
+        <div>
+          <div class="featured-stat-num">50K+</div>
+          <div class="featured-stat-label">Monthly Listeners</div>
+        </div>
+        <div>
+          <div class="featured-stat-num">3</div>
+          <div class="featured-stat-label">Years Active</div>
+        </div>
+      </div>
+      <div class="featured-ctas">
+        <a href="#bookings" class="btn btn-red"><span>Book LUDA G</span></a>
+        <a href="#artists" class="btn btn-white"><span>Full Roster</span></a>
+      </div>
+      <div class="featured-socials">
+        <a href="#" class="artist-social">IG</a>
+        <a href="#" class="artist-social">TW</a>
+        <a href="#" class="artist-social">SC</a>
+        <a href="#" class="artist-social">SP</a>
+        <a href="#" class="artist-social">YT</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="section" id="about">
+  <div class="about-visual fade-in">
+    <div class="about-img-frame">
+      <div class="about-img-inner">GOAT</div>
+    </div>
+    <div class="about-badge">
+      <div class="about-badge-num">5+</div>
+      <div class="about-badge-text">Years Strong</div>
+    </div>
+  </div>
+  <div class="about-text fade-in">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">We Don't<br/><span class="red">Follow</span><br/>Trends.</h2>
+    <div class="divider"></div>
+    <p>GOAT RECORDS was born from one relentless vision: to build the most dominant music label on the continent. We don't chase charts — we create them. Founded by artists, for artists, we operate at the intersection of raw talent and strategic excellence.</p>
+    <p>From underground cyphers to main-stage headliners, every act we sign carries the GOAT standard — unbothered, undeniable, and undeniably elite. Our roster spans hip-hop, Afrobeats, electronic, and beyond.</p>
+    <p>We don't just sign artists. We build legacies.</p>
+    <a href="#artists" class="btn btn-red" style="margin-top:24px"><span>Meet Our Artists</span></a>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Artists Signed</div>
+      </div>
+      <div>
+        <div class="stat-num">200M</div>
+        <div class="stat-label">Streams Global</div>
+      </div>
+      <div>
+        <div class="stat-num">80+</div>
+        <div class="stat-label">Events/Year</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ARTISTS ─── -->
+<section class="section" id="artists">
+  <div class="artists-header fade-in">
+    <div>
+      <div class="section-label">The Roster</div>
+      <h2 class="section-title">Our<br/><span class="red">Artists</span></h2>
+    </div>
+    <a href="#bookings" class="btn btn-red"><span>Join the Roster</span></a>
+  </div>
+  <div class="artists-grid">
+    <!-- LUDA G — FEATURED LEAD ARTIST -->
+    <div class="artist-card luda-wide fade-in" style="grid-column: span 2; display:grid; grid-template-columns:1fr 1fr; min-height:320px;">
+      <div class="artist-card-img" style="padding-top:0; min-height:320px;">
+        <div class="artist-card-img-inner" style="position:relative; height:100%;">
+          <div class="artist-avatar" style="height:100%; background: linear-gradient(135deg,#200000,#400000,#0d0000); font-size:7rem; position:relative;">
+            LG
+            <div style="position:absolute;top:16px;left:16px;background:var(--red);font-family:var(--font-cond);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;padding:4px 12px;color:#fff;">★ Lead Artist</div>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative; background:var(--gray); display:flex; flex-direction:column; justify-content:center; padding:40px; border-left:3px solid var(--red);">
+        <span class="status-badge status-signed" style="align-self:flex-start;">Signed</span>
+        <div class="artist-name" style="font-size:3.2rem; margin-top:4px;">LUDA G</div>
+        <div class="artist-genre" style="font-size:0.8rem; margin-bottom:16px;">Rap / Hip-Hop — Paarl, SA</div>
+        <p class="artist-bio" style="max-width:400px; opacity:1; color:rgba(255,255,255,0.65);">The cornerstone of GOAT RECORDS. LUDA G's razor-sharp lyricism and cinematic delivery define the new sound coming out of Paarl. Every verse hits like a statement.</p>
+        <div class="artist-socials" style="justify-content:flex-start; margin-top:16px;">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">TW</a>
+          <a href="#" class="artist-social">SC</a>
+          <a href="#" class="artist-social">SP</a>
+          <a href="#" class="artist-social">YT</a>
+        </div>
+        <a href="#bookings" class="btn btn-red" style="align-self:flex-start; margin-top:24px;"><span>Book LUDA G</span></a>
+      </div>
+    </div>
+    <div class="artist-card fade-in">
+      <div class="artist-card-img">
+        <div class="artist-card-img-inner">
+          <div class="artist-avatar" style="background: linear-gradient(135deg,#1a0000,#330000);">KNG</div>
+        </div>
+      </div>
+      <div class="artist-overlay">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name">KINGSTON</div>
+        <div class="artist-genre">Afrobeats / Hip-Hop</div>
+      </div>
+      <div class="artist-overlay-detail">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name" style="font-size:1.4rem;">KINGSTON</div>
+        <div class="artist-genre">Afrobeats / Hip-Hop</div>
+        <p class="artist-bio">Multi-platinum selling artist with a signature Afro-fusion sound. 3 albums, 40M+ streams and counting.</p>
+        <div class="artist-socials">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">TW</a>
+          <a href="#" class="artist-social">SC</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-card fade-in">
+      <div class="artist-card-img">
+        <div class="artist-card-img-inner">
+          <div class="artist-avatar" style="background: linear-gradient(135deg,#000011,#000033);">ZΛRΛ</div>
+        </div>
+      </div>
+      <div class="artist-overlay">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name">ZΛRΛ NOIR</div>
+        <div class="artist-genre">R&B / Soul</div>
+      </div>
+      <div class="artist-overlay-detail">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name" style="font-size:1.4rem;">ZΛRΛ NOIR</div>
+        <div class="artist-genre">R&B / Soul</div>
+        <p class="artist-bio">Boundary-breaking vocalist blending cinematic R&B with raw emotional depth. Her debut single went top 5 in 12 countries.</p>
+        <div class="artist-socials">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">TW</a>
+          <a href="#" class="artist-social">YT</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-card fade-in">
+      <div class="artist-card-img">
+        <div class="artist-card-img-inner">
+          <div class="artist-avatar" style="background: linear-gradient(135deg,#001100,#002200);">D/MN</div>
+        </div>
+      </div>
+      <div class="artist-overlay">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name">DJ DÆMON</div>
+        <div class="artist-genre">Electronic / Amapiano</div>
+      </div>
+      <div class="artist-overlay-detail">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name" style="font-size:1.4rem;">DJ DÆMON</div>
+        <div class="artist-genre">Electronic / Amapiano</div>
+        <p class="artist-bio">The architect of the new Amapiano wave. Sells out venues across Africa and Europe with a legendary DJ set.</p>
+        <div class="artist-socials">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">SC</a>
+          <a href="#" class="artist-social">SP</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-card fade-in">
+      <div class="artist-card-img">
+        <div class="artist-card-img-inner">
+          <div class="artist-avatar" style="background: linear-gradient(135deg,#110011,#220022);">RXGE</div>
+        </div>
+      </div>
+      <div class="artist-overlay">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name">RXGE</div>
+        <div class="artist-genre">Trap / Drill</div>
+      </div>
+      <div class="artist-overlay-detail">
+        <span class="status-badge status-signed">Signed</span>
+        <div class="artist-name" style="font-size:1.4rem;">RXGE</div>
+        <div class="artist-genre">Trap / Drill</div>
+        <p class="artist-bio">Raw. Unfiltered. Unstoppable. RXGE brings the hardest bars on the continent backed by cinematic production.</p>
+        <div class="artist-socials">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">TW</a>
+          <a href="#" class="artist-social">YT</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-card fade-in">
+      <div class="artist-card-img">
+        <div class="artist-card-img-inner">
+          <div class="artist-avatar" style="background: linear-gradient(135deg,#111100,#222200);">LVNA</div>
+        </div>
+      </div>
+      <div class="artist-overlay">
+        <span class="status-badge status-upcoming">Upcoming</span>
+        <div class="artist-name">LVNA</div>
+        <div class="artist-genre">Pop / Alt-R&B</div>
+      </div>
+      <div class="artist-overlay-detail">
+        <span class="status-badge status-upcoming">Upcoming</span>
+        <div class="artist-name" style="font-size:1.4rem;">LVNA</div>
+        <div class="artist-genre">Pop / Alt-R&B</div>
+        <p class="artist-bio">Emerging force with an ethereal voice and genre-defying sound. Debut EP dropping this fall — watch closely.</p>
+        <div class="artist-socials">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">TW</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="artist-card fade-in">
+      <div class="artist-card-img">
+        <div class="artist-card-img-inner">
+          <div class="artist-avatar" style="background: linear-gradient(135deg,#0d0000,#1a0a00);">BLCK</div>
+        </div>
+      </div>
+      <div class="artist-overlay">
+        <span class="status-badge status-upcoming">Upcoming</span>
+        <div class="artist-name">BLXCKOUT</div>
+        <div class="artist-genre">Gqom / Club</div>
+      </div>
+      <div class="artist-overlay-detail">
+        <span class="status-badge status-upcoming">Upcoming</span>
+        <div class="artist-name" style="font-size:1.4rem;">BLXCKOUT</div>
+        <div class="artist-genre">Gqom / Club</div>
+        <p class="artist-bio">Pure Durban energy meeting next-level production. The clubs shut down when BLXCKOUT drops a set.</p>
+        <div class="artist-socials">
+          <a href="#" class="artist-social">IG</a>
+          <a href="#" class="artist-social">SC</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── EVENTS ─── -->
+<section class="section" id="events">
+  <div class="fade-in">
+    <div class="section-label">Live Performances</div>
+    <h2 class="section-title">Tour<br/><span class="red">Dates</span></h2>
+  </div>
+  <div class="events-grid fade-in">
+    <div class="event-row">
+      <div class="event-date">
+        <div class="event-day">04</div>
+        <div class="event-month">Apr 2026</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">GOAT RECORDS SHOWCASE</div>
+        <div class="event-venue">Pearl Valley, Paarl — Western Cape, SA</div>
+        <div class="event-tags">
+          <span class="event-tag">Live Show</span>
+          <span class="event-tag">All Artists</span>
+        </div>
+      </div>
+      <div class="event-action">
+        <a href="#bookings" class="btn btn-red" style="padding:10px 24px"><span>Get Tickets</span></a>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="event-date">
+        <div class="event-day">12</div>
+        <div class="event-month">Apr 2026</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">LUDA G — PAARL HOMECOMING</div>
+        <div class="event-venue">Bolandse Kloof, Paarl — Western Cape, SA</div>
+        <div class="event-tags">
+          <span class="event-tag">Headline</span>
+          <span class="event-tag">Rap</span>
+        </div>
+      </div>
+      <div class="event-action">
+        <a href="#bookings" class="btn btn-red" style="padding:10px 24px"><span>Get Tickets</span></a>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="event-date">
+        <div class="event-day">25</div>
+        <div class="event-month">Apr 2026</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">DÆMON B2B SET</div>
+        <div class="event-venue">Fabric, London — United Kingdom</div>
+        <div class="event-tags">
+          <span class="event-tag">DJ Set</span>
+          <span class="event-tag">Electronic</span>
+        </div>
+      </div>
+      <div class="event-action">
+        <a href="#bookings" class="btn btn-white" style="padding:10px 24px"><span>Sold Out</span></a>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="event-date">
+        <div class="event-day">09</div>
+        <div class="event-month">May 2026</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">RXGE — RAGE TOUR</div>
+        <div class="event-venue">Lyric Theatre, Johannesburg — South Africa</div>
+        <div class="event-tags">
+          <span class="event-tag">Trap</span>
+          <span class="event-tag">Tour</span>
+        </div>
+      </div>
+      <div class="event-action">
+        <a href="#bookings" class="btn btn-red" style="padding:10px 24px"><span>Get Tickets</span></a>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="event-date">
+        <div class="event-day">22</div>
+        <div class="event-month">May 2026</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">ZΛRΛ NOIR — DEBUT SHOWCASE</div>
+        <div class="event-venue">The Grand, Nairobi — Kenya</div>
+        <div class="event-tags">
+          <span class="event-tag">R&B</span>
+          <span class="event-tag">Debut</span>
+        </div>
+      </div>
+      <div class="event-action">
+        <a href="#bookings" class="btn btn-red" style="padding:10px 24px"><span>Get Tickets</span></a>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="event-date">
+        <div class="event-day">14</div>
+        <div class="event-month">Jun 2026</div>
+      </div>
+      <div class="event-info">
+        <div class="event-title">GOAT RECORDS FESTIVAL</div>
+        <div class="event-venue">Dal Josaphat Oval, Paarl — Western Cape, SA</div>
+        <div class="event-tags">
+          <span class="event-tag">Festival</span>
+          <span class="event-tag">All Roster</span>
+          <span class="event-tag">Outdoor</span>
+        </div>
+      </div>
+      <div class="event-action">
+        <a href="#bookings" class="btn btn-red" style="padding:10px 24px"><span>Get Tickets</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MERCH ─── -->
+<section class="section" id="merch">
+  <div class="fade-in" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:20px">
+    <div>
+      <div class="section-label">Official Store</div>
+      <h2 class="section-title">Merch<br/><span class="red">Drop</span></h2>
+    </div>
+    <a href="#" class="btn btn-red"><span>View All</span></a>
+  </div>
+  <div class="merch-grid">
+    <div class="merch-card fade-in">
+      <div class="merch-new">New</div>
+      <div class="merch-img">
+        <div class="merch-img-inner" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-display);font-size:4rem;color:rgba(255,0,0,0.6);">G</div>
+          <div style="font-family:var(--font-cond);font-size:0.65rem;letter-spacing:0.3em;color:rgba(255,255,255,0.2);">HOODIE</div>
+        </div>
+      </div>
+      <div class="merch-body">
+        <div class="merch-name">Classic Logo Hoodie</div>
+        <div class="merch-desc">Premium heavyweight fleece — Black / Red</div>
+        <div class="merch-footer">
+          <div class="merch-price">R750<span> ZAR</span></div>
+          <button class="merch-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="merch-card fade-in">
+      <div class="merch-img">
+        <div class="merch-img-inner" style="background:linear-gradient(135deg,#110000,#220000);flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-display);font-size:2.5rem;color:rgba(255,0,0,0.55);letter-spacing:0.05em;">GOAT</div>
+          <div style="font-family:var(--font-cond);font-size:0.65rem;letter-spacing:0.3em;color:rgba(255,255,255,0.2);">TEE</div>
+        </div>
+      </div>
+      <div class="merch-body">
+        <div class="merch-name">Bold Logo Tee</div>
+        <div class="merch-desc">100% ringspun cotton — Washed Black</div>
+        <div class="merch-footer">
+          <div class="merch-price">R420<span> ZAR</span></div>
+          <button class="merch-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="merch-card fade-in">
+      <div class="merch-new">New</div>
+      <div class="merch-img">
+        <div class="merch-img-inner" style="background:linear-gradient(135deg,#0d0d0d,#1a1a1a);flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-display);font-size:3rem;color:rgba(255,0,0,0.5);">●</div>
+          <div style="font-family:var(--font-cond);font-size:0.65rem;letter-spacing:0.3em;color:rgba(255,255,255,0.2);">SNAPBACK</div>
+        </div>
+      </div>
+      <div class="merch-body">
+        <div class="merch-name">GOAT Snapback Cap</div>
+        <div class="merch-desc">Structured 6-panel — Black / Red embroidery</div>
+        <div class="merch-footer">
+          <div class="merch-price">R380<span> ZAR</span></div>
+          <button class="merch-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="merch-card fade-in">
+      <div class="merch-img">
+        <div class="merch-img-inner" style="background:linear-gradient(135deg,#200000,#300000);flex-direction:column;gap:8px;">
+          <div style="font-family:var(--font-display);font-size:2.5rem;color:rgba(255,0,0,0.5);">RECORDS</div>
+          <div style="font-family:var(--font-cond);font-size:0.65rem;letter-spacing:0.3em;color:rgba(255,255,255,0.2);">JACKET</div>
+        </div>
+      </div>
+      <div class="merch-body">
+        <div class="merch-name">Varsity Jacket</div>
+        <div class="merch-desc">Limited edition — Black wool / Red leather sleeves</div>
+        <div class="merch-footer">
+          <div class="merch-price">R1,800<span> ZAR</span></div>
+          <button class="merch-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section class="section" id="gallery">
+  <div class="fade-in" style="margin-bottom:48px">
+    <div class="section-label">Moments</div>
+    <h2 class="section-title">The<br/><span class="red">Gallery</span></h2>
+  </div>
+  <div class="gallery-grid fade-in" id="gallery-grid">
+    <!-- Gallery items generated by JS -->
+  </div>
+</section>
+
+<!-- ─── LIGHTBOX ─── -->
+<div id="lightbox">
+  <div class="lightbox-close" id="lb-close">✕</div>
+  <div class="lightbox-content" id="lb-content"></div>
+</div>
+
+<!-- ─── BOOKINGS ─── -->
+<section class="section" id="bookings">
+  <div class="bookings-inner">
+    <div class="bookings-info fade-in">
+      <div class="section-label">For Event Organizers</div>
+      <h2 class="section-title">Book<br/><span class="red">GOAT</span><br/>Records</h2>
+      <div class="divider"></div>
+      <p>We bring elite performances to stages of all sizes. From intimate club nights to massive festival headliners — our artists deliver unforgettable experiences every single time.</p>
+      <p>Fill in the form and our bookings team will respond within 48 hours with full rider details, availability, and quotes.</p>
+      <div class="booking-features">
+        <div class="booking-feature">
+          <div class="bf-icon">🎤</div>
+          <div>
+            <div class="bf-title">Live Performances</div>
+            <div class="bf-desc">Full live shows with bands, backing tracks, and visuals</div>
+          </div>
+        </div>
+        <div class="booking-feature">
+          <div class="bf-icon">🎧</div>
+          <div>
+            <div class="bf-title">DJ Sets</div>
+            <div class="bf-desc">Club nights, festivals, private events — our DJs go all night</div>
+          </div>
+        </div>
+        <div class="booking-feature">
+          <div class="bf-icon">🎬</div>
+          <div>
+            <div class="bf-title">Brand Partnerships</div>
+            <div class="bf-desc">Artist endorsements, brand events, and media appearances</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bookings-form fade-in">
+      <form onsubmit="handleBooking(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+27 000 000 0000" />
+          </div>
+          <div class="form-group">
+            <label>Event Type</label>
+            <select required>
+              <option value="" disabled selected>Select type</option>
+              <option>Club Night</option>
+              <option>Festival</option>
+              <option>Private Event</option>
+              <option>Corporate Event</option>
+              <option>Brand Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Event Date</label>
+            <input type="date" required />
+          </div>
+          <div class="form-group">
+            <label>Budget Range</label>
+            <select required>
+              <option value="" disabled selected>Select range</option>
+              <option>R5,000 – R15,000</option>
+              <option>R15,000 – R50,000</option>
+              <option>R50,000 – R150,000</option>
+              <option>R150,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Venue & Location</label>
+          <input type="text" placeholder="Venue name and city" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us about your event, which artist(s) you want to book, expected attendance, and any special requirements..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Book GOAT Records →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ─── NEWSLETTER ─── -->
+<section id="newsletter" class="fade-in">
+  <div class="nl-title">STAY IN THE<br/>LOOP</div>
+  <div class="nl-sub">New drops. Exclusive events. Artist news. First access.</div>
+  <div class="nl-form">
+    <input class="nl-input" type="email" placeholder="Enter your email address" />
+    <button class="nl-btn">Subscribe</button>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section class="section" id="contact">
+  <div class="fade-in" style="margin-bottom:56px">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Contact<br/><span class="red">Us</span></h2>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-in">
+      <div class="contact-block-label">Email</div>
+      <a href="mailto:info@goatrecords.co.za" class="contact-value">info@goatrecords.co.za</a>
+      <div class="contact-value-small">General inquiries & press</div>
+      <br/>
+      <a href="mailto:bookings@goatrecords.co.za" class="contact-value">bookings@goatrecords.co.za</a>
+      <div class="contact-value-small">Bookings & events</div>
+      <br/>
+      <div class="contact-block-label" style="margin-top:24px">Phone</div>
+      <a href="tel:+27210000000" class="contact-value">+27 21 000 0000</a>
+      <div class="contact-value-small">Mon – Fri, 9am – 6pm SAST</div>
+    </div>
+    <div class="fade-in">
+      <div class="contact-block-label">Follow Us</div>
+      <div class="social-links">
+        <a href="#" class="social-link">
+          <div class="social-link-icon">IG</div>
+          <div class="social-link-name">@goatrecordssa</div>
+        </a>
+        <a href="#" class="social-link">
+          <div class="social-link-icon">TW</div>
+          <div class="social-link-name">@goatrecords</div>
+        </a>
+        <a href="#" class="social-link">
+          <div class="social-link-icon">YT</div>
+          <div class="social-link-name">GOAT RECORDS Official</div>
+        </a>
+        <a href="#" class="social-link">
+          <div class="social-link-icon">TK</div>
+          <div class="social-link-name">@goatrecords</div>
+        </a>
+        <a href="#" class="social-link">
+          <div class="social-link-icon">SP</div>
+          <div class="social-link-name">GOAT Records on Spotify</div>
+        </a>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="contact-block-label">Location</div>
+      <div class="contact-value" style="pointer-events:none;">Paarl, South Africa</div>
+      <div class="contact-value-small">Western Cape</div>
+      <div style="margin-top:24px;background:var(--gray-mid);padding:24px;border-left:3px solid var(--red);">
+        <div style="font-family:var(--font-cond);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px;">Office Hours</div>
+        <div style="font-family:var(--font-cond);font-size:0.88rem;color:rgba(255,255,255,0.6);">Monday – Friday: 9:00 – 18:00</div>
+        <div style="font-family:var(--font-cond);font-size:0.88rem;color:rgba(255,255,255,0.6);">Saturday: 10:00 – 14:00</div>
+        <div style="font-family:var(--font-cond);font-size:0.88rem;color:rgba(255,255,255,0.35);">Sunday: Closed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a href="#hero" class="footer-logo">GOAT<span>●</span>REC</a>
+      <div class="footer-slogan">Built for Greatness. Powered by Sound.</div>
+    </div>
+    <div style="display:flex;gap:60px;flex-wrap:wrap;">
+      <div class="footer-links-col">
+        <h4>Label</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#artists">Artists</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>Business</h4>
+        <ul>
+          <li><a href="#bookings">Bookings</a></li>
+          <li><a href="#merch">Merch Store</a></li>
+          <li><a href="#contact">Press & Media</a></li>
+          <li><a href="#bookings">A&R Submissions</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 GOAT RECORDS. All rights reserved. Paarl, Western Cape, South Africa.</div>
+    <div class="footer-red-line"></div>
+    <div class="footer-copy">Crafted with dominance.</div>
+  </div>
+</footer>
+
+<!-- ─── MUSIC TOGGLE ─── -->
+<button id="music-toggle" title="Toggle ambient sound">
+  <div class="music-bars">
+    <div class="music-bar"></div>
+    <div class="music-bar"></div>
+    <div class="music-bar"></div>
+    <div class="music-bar"></div>
+  </div>
+  <div class="pause-icon">♫</div>
+</button>
+
+<!-- ─── SCRIPTS ─── -->
+<script>
+  /* ─── HERO CANVAS ─── */
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, beams = [], particles = [], frame = 0;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function initBeams() {
+      beams = [];
+      const count = Math.max(6, Math.floor(W / 160));
+      for (let i = 0; i < count; i++) {
+        beams.push({
+          x:     Math.random() * W,
+          angle: (Math.random() - 0.5) * 0.7,
+          width: Math.random() * 60 + 20,
+          speed: (Math.random() - 0.5) * 0.4,
+          color: Math.random() < 0.35 ? 'red' : 'white',
+          alpha: Math.random() * 0.08 + 0.02,
+          pulse: Math.random() * Math.PI * 2,
+        });
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = 80;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.3,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: -Math.random() * 0.5 - 0.1,
+          alpha: Math.random() * 0.6 + 0.1,
+          color: Math.random() < 0.3 ? '#ff0000' : '#ffffff',
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Background gradient
+      const bg = ctx.createRadialGradient(W/2, H*0.6, 0, W/2, H/2, Math.max(W,H)*0.8);
+      bg.addColorStop(0, 'rgba(30,0,0,1)');
+      bg.addColorStop(0.4, 'rgba(10,0,0,1)');
+      bg.addColorStop(1, 'rgba(0,0,0,1)');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Ground glow
+      const glow = ctx.createLinearGradient(0, H*0.65, 0, H);
+      glow.addColorStop(0, 'rgba(255,0,0,0.06)');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, H*0.65, W, H*0.35);
+
+      // Light beams
+      beams.forEach(b => {
+        b.x  += b.speed;
+        b.pulse += 0.018;
+        if (b.x > W + 200) b.x = -200;
+        if (b.x < -200)    b.x =  W + 200;
+
+        const alpha = b.alpha * (0.7 + 0.3 * Math.sin(b.pulse));
+        const originY = H * 0.72;
+
+        ctx.save();
+        ctx.translate(b.x, originY);
+        ctx.rotate(b.angle);
+
+        const grad = ctx.createLinearGradient(0, 0, 0, -H * 1.2);
+        if (b.color === 'red') {
+          grad.addColorStop(0, `rgba(255,0,0,${alpha * 2})`);
+          grad.addColorStop(0.5, `rgba(255,0,0,${alpha})`);
+          grad.addColorStop(1, 'rgba(255,0,0,0)');
+        } else {
+          grad.addColorStop(0, `rgba(255,220,160,${alpha * 1.5})`);
+          grad.addColorStop(0.4, `rgba(255,240,200,${alpha * 0.5})`);
+          grad.addColorStop(1, 'rgba(255,255,255,0)');
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(-b.width / 2, 0);
+        ctx.lineTo(b.width / 2, 0);
+        ctx.lineTo(b.width * 1.8, -H * 1.2);
+        ctx.lineTo(-b.width * 1.8, -H * 1.2);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Particles (crowd sparks)
+      particles.forEach(p => {
+        p.x  += p.vx;
+        p.y  += p.vy;
+        if (p.y < -10) {
+          p.y = H + 5;
+          p.x = Math.random() * W;
+          p.alpha = Math.random() * 0.6 + 0.1;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color.replace(')', `,${p.alpha})`).replace('rgb','rgba').replace('##','#');
+        if (p.color === '#ff0000') {
+          ctx.fillStyle = `rgba(255,0,0,${p.alpha})`;
+        } else {
+          ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+        }
+        ctx.fill();
+      });
+
+      // Horizon line
+      ctx.beginPath();
+      ctx.moveTo(0, H * 0.72);
+      ctx.lineTo(W, H * 0.72);
+      ctx.strokeStyle = 'rgba(255,0,0,0.15)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      frame++;
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    initBeams();
+    initParticles();
+    draw();
+    window.addEventListener('resize', () => { resize(); initBeams(); initParticles(); });
+  })();
+
+  /* ─── STICKY NAV ─── */
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('nav');
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* ─── HAMBURGER ─── */
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('mobile-menu');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+  function closeMobile() {
+    ham.classList.remove('open');
+    mob.classList.remove('open');
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  /* ─── GALLERY ─── */
+  const galleryData = [
+    { label: 'STAGE',    h: 280, bg: 'linear-gradient(135deg,#1a0000,#330000,#000)' },
+    { label: 'STUDIO',   h: 200, bg: 'linear-gradient(135deg,#000,#0d0d0d,#1a1a1a)' },
+    { label: 'CROWD',    h: 340, bg: 'linear-gradient(135deg,#0d0000,#200000)' },
+    { label: 'LIGHTS',   h: 220, bg: 'linear-gradient(135deg,#110000,#1a0000,#0d0d00)' },
+    { label: 'ARTIST',   h: 360, bg: 'linear-gradient(135deg,#000,#0a0a1a,#000)' },
+    { label: 'BACKSTAGE',h: 200, bg: 'linear-gradient(135deg,#0a0a0a,#1a0a00)' },
+    { label: 'FESTIVAL', h: 300, bg: 'linear-gradient(135deg,#0d0000,#1a0000,#000)' },
+    { label: 'STUDIO',   h: 240, bg: 'linear-gradient(135deg,#000,#111,#0a000a)' },
+    { label: 'MERCH',    h: 260, bg: 'linear-gradient(135deg,#0d0d0d,#1a0000)' },
+  ];
+
+  const grid = document.getElementById('gallery-grid');
+  galleryData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.innerHTML = `
+      <div class="gallery-item-inner">
+        <div class="gallery-placeholder" style="height:${item.h}px;background:${item.bg};font-size:${Math.min(item.h/3,80)}px;">
+          ${item.label}
+        </div>
+      </div>
+      <div class="gallery-item-overlay">⊕</div>
+    `;
+    div.addEventListener('click', () => openLightbox(item, i));
+    grid.appendChild(div);
+  });
+
+  /* ─── LIGHTBOX ─── */
+  function openLightbox(item, i) {
+    const lb = document.getElementById('lightbox');
+    const content = document.getElementById('lb-content');
+    content.innerHTML = `
+      <div class="lb-placeholder" style="background:${item.bg};">
+        <div class="lb-placeholder-title">${item.label}</div>
+        <div class="lb-placeholder-sub">GOAT RECORDS — ${i + 1} / ${galleryData.length}</div>
+      </div>
+    `;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  /* ─── BOOKING FORM ─── */
+  function handleBooking(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = "✓ Request Sent — We'll Be In Touch!";
+    btn.style.background = '#111';
+    btn.style.cursor = 'default';
+    setTimeout(() => {
+      btn.textContent = 'Book GOAT Records →';
+      btn.style.background = '';
+      btn.style.cursor = '';
+      e.target.reset();
+    }, 4000);
+  }
+
+  /* ─── NEWSLETTER ─── */
+  document.querySelector('.nl-btn').addEventListener('click', function() {
+    const input = document.querySelector('.nl-input');
+    if (input.value && input.value.includes('@')) {
+      this.textContent = '✓ Subscribed!';
+      input.value = '';
+      setTimeout(() => { this.textContent = 'Subscribe'; }, 3000);
+    }
+  });
+
+  /* ─── MUSIC TOGGLE (ambient oscillator) ─── */
+  let audioCtx = null, oscillators = [], gainNode = null, musicOn = false;
+  const musicBtn = document.getElementById('music-toggle');
+
+  function startAmbient() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 2);
+    gainNode.connect(audioCtx.destination);
+
+    const freqs = [55, 82.5, 110, 165];
+    oscillators = freqs.map(f => {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sawtooth';
+      osc.frequency.value = f;
+      const g = audioCtx.createGain();
+      g.gain.value = 0.25;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 200 + Math.random() * 100;
+      osc.connect(filter);
+      filter.connect(g);
+      g.connect(gainNode);
+      osc.start();
+      return osc;
+    });
+  }
+
+  function stopAmbient() {
+    if (gainNode) {
+      gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
+      setTimeout(() => oscillators.forEach(o => { try { o.stop(); } catch(e){} }), 2000);
+    }
+  }
+
+  musicBtn.addEventListener('click', () => {
+    musicOn = !musicOn;
+    musicBtn.classList.toggle('paused', !musicOn);
+    if (musicOn) startAmbient();
+    else stopAmbient();
+  });
+</script>
+</body>
+</html>
